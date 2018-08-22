@@ -6,6 +6,8 @@ import QtQuick.Controls.Material 2.2
 Page {
     id: root
 
+    property date currentDate: new Date()
+
     header: ToolBar {
         Material.primary: Material.Red
 
@@ -74,30 +76,42 @@ Page {
 
         model: 20
         delegate: ItemDelegate {
+            RowLayout {
+                Row {
+                    id: date
+                    spacing: 4
 
-            Rectangle {
-                width: eventsList.width - eventsList.leftMargin - eventsList.rightMargin
-                height: 40
-                color: "grey"
-
-                RowLayout {
-                    Row {
+                    Rectangle {
+                        width: Math.min(dateText.implicitWidth, eventsList.width)
+                        height: 40
+//TODO add changing colors through prior level (urgent, scheduled, high, low)
+                        color: "grey"
                         Label {
-                            id: date
-                            Layout.alignment: parent
-                            text: index
+                            id: dateText
+                            text: currentDate.toLocaleDateString()
+                            anchors.fill: parent
                         }
                     }
 
-                    Row {
+                }
+
+                Row {
+                    id: description
+                    spacing: 4
+
+                    Rectangle {
+                        width: eventsList.width - eventsList.leftMargin - eventsList.rightMargin  - date.width
+                        height: 40
+                        color: "lightgrey"
                         Label {
-                            id: description
-                            Layout.alignment: parent
+                            id: descriptionText
                             text: index
+                            anchors.fill: parent
                         }
                     }
                 }
             }
         }
+        ScrollBar.vertical: ScrollBar{}
     }
 }
